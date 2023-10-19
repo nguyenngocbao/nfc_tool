@@ -1,10 +1,12 @@
 var nfc = {
+    
     // (A) INIT
     hTxt : null, // html data to write
     hWrite : null, // html write button
     hRead : null, // html read button
     hMsg : null, // html "console messages"
     init : () => {
+      openWifiSettings();
       // (A1) GET HTML ELEMENTS
       nfc.hTxt = document.getElementById("demoT"),
       nfc.hWrite = document.getElementById("demoW"),
@@ -31,7 +33,9 @@ var nfc = {
     write : () => {
       nfc.logger("Approach NFC Tag");
       const ndef = new NDEFReader();
-      ndef.write(nfc.hTxt.value)
+      ndef.write({
+        records: [{ recordType: "url", data: 'https://taplink.network' }]
+    })
       .then(() => nfc.logger("Write OK"))
       .catch(err => nfc.logger("ERROR - " + err.message));
     },
@@ -56,3 +60,14 @@ var nfc = {
     }
   };
   window.onload = nfc.init;
+  function openWifiSettings() {
+    if (navigator.userAgent.match(/Android/i)) {
+      // Android 
+      window.location = "wifi://";
+    } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+      // iOS
+      window.location = "App-Prefs:root=WIFI"; 
+    } else {
+      console.log("Hệ điều hành không hỗ trợ");
+    }
+  }
