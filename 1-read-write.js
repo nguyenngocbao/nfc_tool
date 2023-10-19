@@ -68,6 +68,6 @@ var nfc = {
       // iOS
       window.location = "App-Prefs:root=WIFI"; 
     } else {
-      console.log("Hệ điều hành không hỗ trợ");
+      alert("Hệ điều hành không hỗ trợ");
     }
   }
